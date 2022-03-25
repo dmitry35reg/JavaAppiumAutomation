@@ -34,4 +34,12 @@ public class MainClassTest extends MainClass {
 
         Assert.assertTrue("getClassNumber result < or == 45",a > b);
     }
+
+    @Test
+    public void testGetClassString()
+    {
+        String str = getClassString();
+
+        Assert.assertTrue("getClassString result not contains \"hello\" or \"Hello\"",(str.contains("hello")) | (str.contains("Hello")));
+    }
 }
