@@ -25,4 +25,13 @@ public class MainClassTest extends MainClass {
         
         Assert.assertTrue("getLocalNumber result != 14",actual == expected);
     }
+
+    @Test
+    public void testGetClassNumber()
+    {
+        int a = getClassNumber();
+        int b = 45;
+
+        Assert.assertTrue("getClassNumber result < or == 45",a > b);
+    }
 }
