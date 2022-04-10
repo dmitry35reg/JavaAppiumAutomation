@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -149,6 +150,51 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchAndCancel()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        int count = countElements(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Elements not found"
+        );
+
+        Assert.assertTrue(
+                "Articles count " + count + "<=1",
+                count > 1
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Search results are still present on the page",
+                5
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -202,5 +248,12 @@ public class FirstTest {
                 expected_text,
                 actual_text
         );
+    }
+
+    private int countElements (By by, String error_message)
+    {
+        waitForElementPresent(by, error_message, 5);
+        List<WebElement> list = driver.findElements(by);
+        return list.size();
     }
 }
