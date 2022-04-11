@@ -195,6 +195,35 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchResult()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        int count = countElements(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Elements not found"
+        );
+
+        elementsContainsText(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Java",
+                "Search result not contains 'Java'",
+                count
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -255,5 +284,18 @@ public class FirstTest {
         waitForElementPresent(by, error_message, 5);
         List<WebElement> list = driver.findElements(by);
         return list.size();
+    }
+
+    private void elementsContainsText (By by, String expected_text, String error_message, int n)
+    {
+        List<WebElement> list = driver.findElements(by);
+        for(int i=0;i<n;i++)
+        {
+            String actual_text = list.get(i).getAttribute("text");
+            Assert.assertTrue(
+                    error_message,
+                    actual_text.contains(expected_text)
+            );
+        }
     }
 }
