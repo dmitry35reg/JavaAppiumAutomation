@@ -241,7 +241,7 @@ public class FirstTest {
 
     private void assertElementHasText (By by, String expected_text, String error_message)
     {
-        WebElement element = waitForElementPresent(by, error_message, 5);
+        WebElement element = waitForElementPresent(by, "Element is not present on the page", 5);
         String actual_text = element.getAttribute("text");
         Assert.assertEquals(
                 error_message,
