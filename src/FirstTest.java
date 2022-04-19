@@ -28,6 +28,7 @@ public class FirstTest {
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("deviceName","AndroidTestDevice");
         capabilities.setCapability("platformVersion","9");
+        capabilities.setCapability("orientation","PORTRAIT");
         capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
@@ -39,7 +40,6 @@ public class FirstTest {
     @After
     public void tearDown()
     {
-        driver.rotate(ScreenOrientation.PORTRAIT);
         driver.quit();
     }
 
