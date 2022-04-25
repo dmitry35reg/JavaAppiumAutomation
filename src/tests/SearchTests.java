@@ -50,4 +50,25 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForEmptyResultsLabel();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    //Ex3: Тест: отмена поиска
+    @Test
+    public void testSearchAndCancel()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+
+        int count = SearchPageObject.getAmountOfFoundArticles();
+
+        assertTrue(
+                "Articles count " + count + "<=1",
+                count > 1
+        );
+
+        SearchPageObject.clearSearchLine();
+        SearchPageObject.waitForCancelButtonToAppear();
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.assertThereIsNoResultOfSearch();
+    }
 }

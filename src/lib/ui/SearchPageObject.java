@@ -46,6 +46,10 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementAndSendKeys(By.xpath(SEARCH_INPUT), search_line,"Cannot find and type into search input", 5);
     }
 
+    public void clearSearchLine() {
+        this.waitForElementAndClear(By.xpath(SEARCH_INPUT),"Cannot find and type into search input", 5);
+    }
+
     public void waitForSearchResult(String substring) {
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find search result with substring " + substring);

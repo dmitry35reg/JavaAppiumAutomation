@@ -11,6 +11,7 @@ public class ArticlePageObject extends MainPageObject{
             FOOTER_ELEMENT = "//*[@text='View page in browser']",
             OPTIONS_BUTTON = "//android.widget.ImageView[@content-desc='More options']",
             OPTIONS_ADD_TO_MY_LIST_BUTTON = "//android.widget.LinearLayout[3]/android.widget.RelativeLayout/android.widget.TextView[@text='Add to reading list']",
+            CREATED_FOLDER_ELEMENT_TPL = "//*[@text='{FOLDER_NAME}']",
             ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
             MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
             MY_LIST_OK_BUTTON = "//*[@text='OK']",
@@ -20,6 +21,13 @@ public class ArticlePageObject extends MainPageObject{
     {
         super (driver);
     }
+
+    /*TEMPLATES METHODS*/
+    private static String getCreatedFolderByName(String name_of_folder)
+    {
+        return CREATED_FOLDER_ELEMENT_TPL.replace("{FOLDER_NAME}", name_of_folder);
+    }
+    /*TEMPLATES METHODS*/
 
     public WebElement waitForTitleElement()
     {
@@ -39,6 +47,16 @@ public class ArticlePageObject extends MainPageObject{
                 "Cannot find the end of article",
                 20
         );
+    }
+
+    public void clickCreatedFolderByName(String name_of_folder) {
+        String created_folder_xpath = getCreatedFolderByName(name_of_folder);
+        this.waitForElementAndClick(By.xpath(created_folder_xpath), "Cannot find and click created folder by name " + name_of_folder, 10);
+    }
+
+    public void assertTitlePresent()
+    {
+        this.assertElementPresent(By.id(TITLE), "Cannot find article title on page!");
     }
 
     public void addArticleToMyList(String name_of_folder)
@@ -79,6 +97,23 @@ public class ArticlePageObject extends MainPageObject{
                 "Cannot press OK button",
                 5
         );
+    }
+
+    public void addArticleToCreatedFolderByName(String name_of_folder)
+    {
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_BUTTON),
+                "Cannot find button to open article options",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        this.clickCreatedFolderByName(name_of_folder);
     }
 
     public void closeArticle()

@@ -40,6 +40,11 @@ public class MyListsPageObject extends MainPageObject{
         this.waitForElementPresent(By.xpath(articleXpath), "Cannot find saved article by title " + article_title, 15);
     }
 
+    public void openArticleByTitle(String article_title) {
+        String articleXpath = getFolderXpathByName(article_title);
+        this.waitForElementPresent(By.xpath(articleXpath), "Cannot find saved article by title " + article_title, 5);
+    }
+
     public void waitForArticleToDisappearByTitle(String article_title) {
         String articleXpath = getFolderXpathByName(article_title);
         this.waitForElementNotPresent(By.xpath(articleXpath), "Saved article is still present with title " + article_title, 15);
