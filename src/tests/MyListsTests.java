@@ -31,13 +31,22 @@ public class MyListsTests extends CoreTestCase {
         } else {
             ArticlePageObject.addArticlesToMySaved();
         }
+
         ArticlePageObject.closeArticle();
+        if (Platform.getInstance().isIOS()) {
+            SearchPageObject.clickCancelSearch();
+            SearchPageObject.waitForCancelButtonToDisappear();
+        }
+
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         if (Platform.getInstance().isAndroid()) {
             MyListsPageObject.openFolderByName(name_of_folder);
+        }
+        if (Platform.getInstance().isIOS()) {
+            MyListsPageObject.closeSyncSavedArticlesPopUp();
         }
         MyListsPageObject.swipeByArticleToDelete(article_title);
     }
