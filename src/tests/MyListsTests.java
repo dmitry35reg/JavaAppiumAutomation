@@ -64,34 +64,57 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String first_article_title = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
+
         ArticlePageObject.closeArticle();
+        if (Platform.getInstance().isIOS()) {
+            SearchPageObject.clickCancelSearch();
+        }
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Automation for Apps");
-        ArticlePageObject.waitForTitleElement();
-        String second_article_title = ArticlePageObject.getArticleTitle();
-        ArticlePageObject.addArticleToCreatedFolderByName(name_of_folder);
+        String second_article_title = "Appium";
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToCreatedFolderByName(name_of_folder);;
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
+
         ArticlePageObject.closeArticle();
+        if (Platform.getInstance().isIOS()) {
+            SearchPageObject.clickCancelSearch();
+        }
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-        MyListsPageObject.openFolderByName(name_of_folder);
+        if (Platform.getInstance().isAndroid()) {
+            MyListsPageObject.openFolderByName(name_of_folder);
+        }
+        if (Platform.getInstance().isIOS()) {
+            MyListsPageObject.closeSyncSavedArticlesPopUp();
+        }
         MyListsPageObject.swipeByArticleToDelete(first_article_title);
         MyListsPageObject.waitForArticleToAppearByTitle(second_article_title);
         MyListsPageObject.openArticleByTitle(second_article_title);
 
-        ArticlePageObject.waitForTitleElement();
-        String article_title = ArticlePageObject.getArticleTitle();
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.waitForTitleElement();
+            String article_title = ArticlePageObject.getArticleTitle();
 
-        assertEquals(
-                "We see unexpected title!",
-                second_article_title,
-                article_title
-        );
+            assertEquals(
+                    "We see unexpected title!",
+                    second_article_title,
+                    article_title
+            );
+        } else
+            MyListsPageObject.waitForArticleToAppearByTitle(second_article_title);
     }
 }

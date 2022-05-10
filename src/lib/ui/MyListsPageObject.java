@@ -48,7 +48,7 @@ abstract public class MyListsPageObject extends MainPageObject{
 
     public void openArticleByTitle(String article_title) {
         String articleXpath = getSavedArticleXpathByTitle(article_title);
-        this.waitForElementPresent((articleXpath), "Cannot find saved article by title " + article_title, 5);
+        this.waitForElementAndClick((articleXpath), "Cannot find saved article by title " + article_title, 5);
     }
 
     public void waitForArticleToDisappearByTitle(String article_title) {
